@@ -12,6 +12,7 @@ import java.util.List;
 public class DatabaseQueryService {
 
     private final ReadSqlFile readSqlFile = new ReadSqlFile();
+
     public List<FindLongestProject> findLongestProject() {
         List<FindLongestProject> findLongestProjectList = new ArrayList<>();
         String urlFile = "sql/find_longest_project.sql";
@@ -50,6 +51,7 @@ public class DatabaseQueryService {
                 findMaxProjectsClientList.add(findMaxProjectsClient);
             }
 
+            preparedStatement.close();
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -72,6 +74,8 @@ public class DatabaseQueryService {
                 findMaxSalaryWorkerList.add(findMaxSalaryWorker);
             }
 
+            preparedStatement.close();
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -85,6 +89,7 @@ public class DatabaseQueryService {
         try (Connection connection = Database.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(readSqlFile.read(urlFile));
             ResultSet resultSet = preparedStatement.executeQuery();
+
             while (resultSet.next()) {
                 FindYoungestEldestWorkers findYoungestEldestWorkers = new FindYoungestEldestWorkers();
                 findYoungestEldestWorkers.setType(resultSet.getString("TYPE"));
@@ -92,6 +97,8 @@ public class DatabaseQueryService {
                 findYoungestEldestWorkers.setBirthday(resultSet.getDate("BIRTHDAY"));
                 findYoungestEldestWorkersList.add(findYoungestEldestWorkers);
             }
+
+            preparedStatement.close();
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -115,6 +122,7 @@ public class DatabaseQueryService {
                 printProjectPricesList.add(printProjectPrices);
             }
 
+            preparedStatement.close();
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
