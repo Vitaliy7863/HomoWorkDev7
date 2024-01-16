@@ -1,9 +1,11 @@
 package org.example.service;
 
 import org.example.db.Database;
-import org.example.db.ReadSqlFile;
 import org.example.model.*;
+import org.h2.tools.RunScript;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,15 +13,13 @@ import java.util.List;
 
 public class DatabaseQueryService {
 
-    private final ReadSqlFile readSqlFile = new ReadSqlFile();
 
     public List<FindLongestProject> findLongestProject() {
         List<FindLongestProject> findLongestProjectList = new ArrayList<>();
         String urlFile = "sql/find_longest_project.sql";
 
         try (Connection connection = Database.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(readSqlFile.read(urlFile));
-            ResultSet resultSet = preparedStatement.executeQuery();
+            ResultSet resultSet = RunScript.execute(connection, new FileReader(urlFile));
 
             while (resultSet.next()) {
                 FindLongestProject findLongestProject = new FindLongestProject();
@@ -28,9 +28,8 @@ public class DatabaseQueryService {
                 findLongestProjectList.add(findLongestProject);
             }
 
-            preparedStatement.close();
 
-        } catch (SQLException e) {
+        } catch (SQLException | FileNotFoundException e) {
             throw new RuntimeException(e);
         }
         return findLongestProjectList;
@@ -41,8 +40,7 @@ public class DatabaseQueryService {
         String urlFile = "sql/find_max_projects_client.sql";
 
         try (Connection connection = Database.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(readSqlFile.read(urlFile));
-            ResultSet resultSet = preparedStatement.executeQuery();
+            ResultSet resultSet = RunScript.execute(connection, new FileReader(urlFile));
 
             while (resultSet.next()) {
                 FindMaxProjectsClient findMaxProjectsClient = new FindMaxProjectsClient();
@@ -51,9 +49,7 @@ public class DatabaseQueryService {
                 findMaxProjectsClientList.add(findMaxProjectsClient);
             }
 
-            preparedStatement.close();
-
-        } catch (SQLException e) {
+        } catch (SQLException | FileNotFoundException e) {
             throw new RuntimeException(e);
         }
         return findMaxProjectsClientList;
@@ -64,8 +60,7 @@ public class DatabaseQueryService {
         String urlFile = "sql/find_max_salary_worker.sql";
 
         try (Connection connection = Database.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(readSqlFile.read(urlFile));
-            ResultSet resultSet = preparedStatement.executeQuery();
+            ResultSet resultSet = RunScript.execute(connection, new FileReader(urlFile));
 
             while (resultSet.next()) {
                 FindMaxSalaryWorker findMaxSalaryWorker = new FindMaxSalaryWorker();
@@ -74,9 +69,8 @@ public class DatabaseQueryService {
                 findMaxSalaryWorkerList.add(findMaxSalaryWorker);
             }
 
-            preparedStatement.close();
 
-        } catch (SQLException e) {
+        } catch (SQLException | FileNotFoundException e) {
             throw new RuntimeException(e);
         }
         return findMaxSalaryWorkerList;
@@ -87,8 +81,7 @@ public class DatabaseQueryService {
         String urlFile = "sql/find_youngest_eldest_workers.sql";
 
         try (Connection connection = Database.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(readSqlFile.read(urlFile));
-            ResultSet resultSet = preparedStatement.executeQuery();
+            ResultSet resultSet = RunScript.execute(connection, new FileReader(urlFile));
 
             while (resultSet.next()) {
                 FindYoungestEldestWorkers findYoungestEldestWorkers = new FindYoungestEldestWorkers();
@@ -98,9 +91,7 @@ public class DatabaseQueryService {
                 findYoungestEldestWorkersList.add(findYoungestEldestWorkers);
             }
 
-            preparedStatement.close();
-
-        } catch (SQLException e) {
+        } catch (SQLException | FileNotFoundException e) {
             throw new RuntimeException(e);
         }
         return findYoungestEldestWorkersList;
@@ -111,8 +102,7 @@ public class DatabaseQueryService {
         String urlFile = "sql/print_project_prices.sql";
 
         try (Connection connection = Database.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(readSqlFile.read(urlFile));
-            ResultSet resultSet = preparedStatement.executeQuery();
+            ResultSet resultSet = RunScript.execute(connection, new FileReader(urlFile));
 
             while (resultSet.next()) {
                 PrintProjectPrices printProjectPrices = new PrintProjectPrices();
@@ -122,9 +112,8 @@ public class DatabaseQueryService {
                 printProjectPricesList.add(printProjectPrices);
             }
 
-            preparedStatement.close();
 
-        } catch (SQLException e) {
+        } catch (SQLException | FileNotFoundException e) {
             throw new RuntimeException(e);
         }
 

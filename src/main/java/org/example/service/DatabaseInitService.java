@@ -1,17 +1,19 @@
 package org.example.service;
 
 import org.example.db.Database;
+import org.h2.tools.RunScript;
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.SQLException;
 
 public class DatabaseInitService {
 
-    private static final String INIT_DB_SQL = "INIT=RUNSCRIPT FROM 'sql/init_db.sql'";
-
     public static void main(String[] args) {
-        try(Connection connection = Database.getConnection(INIT_DB_SQL)) {
-            connection.createStatement();
-        } catch (SQLException e) {
+        try(Connection connection = Database.getConnection()) {
+            RunScript.execute(connection, new FileReader("sql/init_db.sql"));
+        } catch (SQLException | FileNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
